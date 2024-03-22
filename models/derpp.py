@@ -60,6 +60,9 @@ class Derpp(ContinualModel):
 
     def observe(self, inputs, labels, not_aug_inputs):
 
+
+        self.unlearn(inputs=inputs, labels=labels)
+
         self.opt.zero_grad()
         outputs = self.net(inputs)
         loss = self.loss(outputs, labels)
@@ -78,10 +81,6 @@ class Derpp(ContinualModel):
 
         loss.backward()
         self.opt.step()
-
-
-
-        self.unlearn(inputs=inputs, labels=labels)
 
         self.buffer.add_data(examples=not_aug_inputs,
                              labels=labels,
